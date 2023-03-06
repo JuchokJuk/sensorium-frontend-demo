@@ -1,0 +1,59 @@
+.outer {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background: #131319;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    margin-top: -30px;
+    margin-left: -30px;
+    pointer-events: none;
+    transition: margin-left 0.4s ease, margin-top 04s ease, width 0.4s ease, height 0.4s ease, border-radius 0.4s ease, opacity 0.4s ease;
+    will-change: width, height, border-radius, opacity;
+}
+
+.inner {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    border: 1px solid #F4FA23;
+    transition: width 0.4s ease, height 0.4s ease, border-radius 0.4s ease;
+    will-change: width, height, border-radius;
+}
+
+.innerGlow {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    border: 1px solid #F4FA23;
+    filter: blur(4px);
+    transition: width 0.4s ease, height 0.4s ease, border-radius 0.4s ease;
+    will-change: width, height, border-radius;
+}
+
+.outer_scroll {
+    margin-top: -35px;
+    margin-left: -25px;
+    width: 50px;
+    height: 70px;
+    border-radius: 25px;
+}
+
+.outer_scroll .inner,
+.outer_scroll .innerGlow {
+    width: 28px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+.outer_hidden {
+    opacity: 0;
+}

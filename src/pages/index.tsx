@@ -3,6 +3,7 @@ import "locomotive-scroll/dist/locomotive-scroll.css"
 import Placeholder from '@/components/feature/Placeholder'
 import { SmoothScrollContext } from '@/contexts/SmoothScroll.context';
 import { useContext, useEffect, useState } from 'react';
+import CustomCursor from '@/components/feature/CustomCursor';
 
 export default function Home() {
 
@@ -15,16 +16,16 @@ export default function Home() {
     if (stopped) {
       console.log("start")
       scrollContext.scroll?.start()
+      document.querySelector('.c-scrollbar')?.classList.remove("c-scrollbar_hidden");
     } else {
       console.log("stop")
       scrollContext.scroll?.stop()
+      document.querySelector('.c-scrollbar')?.classList.add("c-scrollbar_hidden");
     }
     setStopped(!stopped)
   }
 
   function rightClickHandler(e) {
-    console.log("right click!")
-    e.preventDefault();
     scrollContext.scroll?.scrollTo(progress + window.innerHeight);
   }
 
@@ -44,7 +45,7 @@ export default function Home() {
       </Head>
 
 
-      <div data-scroll-container onClick={clickHandler} onContextMenu={rightClickHandler}>
+      <div data-scroll-container onClick={clickHandler} onWheel={rightClickHandler}>
         <div data-scroll-section>
           {Array(10).fill(0).map((element, index) => {
             return (
@@ -53,6 +54,8 @@ export default function Home() {
           })}
         </div>
       </div>
+
+      <CustomCursor />
 
     </>
   )

@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import "../styles/locomotive.css"
 import { SmoothScrollProvider } from "../contexts/SmoothScroll.context"
 import type { AppProps } from 'next/app'
 
