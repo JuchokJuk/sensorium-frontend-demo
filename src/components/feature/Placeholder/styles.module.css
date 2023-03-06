@@ -1,12 +1,18 @@
 .center {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    flex-shrink: 0;
+    height: 100vh;
 }
 
-.center::before {
+.top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.top::before {
     background: var(--secondary-glow);
     border-radius: 50%;
     width: 480px;
@@ -14,15 +20,15 @@
     margin-left: -400px;
 }
 
-.center::after {
+.top::after {
     background: var(--primary-glow);
     width: 240px;
     height: 180px;
     z-index: -1;
 }
 
-.center::before,
-.center::after {
+.top::before,
+.top::after {
     content: '';
     left: 50%;
     position: absolute;
@@ -70,6 +76,11 @@
     background-clip: content-box;
 }
 
+.blockIndex {
+    opacity: 0.5;
+    margin-bottom: 1em;
+}
+
 
 @media (prefers-reduced-motion) {
     .thirteen::before {
@@ -79,6 +90,7 @@
 
 
 @media (prefers-color-scheme: dark) {
+
     .logo,
     .thirteen img {
         filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
@@ -89,6 +101,7 @@
     from {
         transform: rotate(360deg);
     }
+
     to {
         transform: rotate(0deg);
     }

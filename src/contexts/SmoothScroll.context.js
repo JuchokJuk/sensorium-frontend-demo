@@ -5,22 +5,22 @@ export const SmoothScrollContext = createContext({
 })
 
 export const SmoothScrollProvider = ({ children, options }) => {
-  const [scroll, setScroll] = useState(null)
+  const [scroll, setScroll] = useState(null);
 
   useEffect(() => {
-    console.log("useEffect SmoothScrollProvider scroll:", scroll)
     if (!scroll) {
-      ;(async () => {
+      ; (async () => {
         try {
           const LocomotiveScroll = (await import('locomotive-scroll')).default
 
-          console.log("SCROLL INIT")
-          setScroll(
-            new LocomotiveScroll({
-              el: document.querySelector('[data-scroll-container]') ?? undefined,
-              ...options,
-            })
-          )
+          const scroll = new LocomotiveScroll({
+            el: document.querySelector('[data-scroll-container]') ?? undefined,
+            ...options,
+          })
+          scroll.stop();
+
+          setScroll(scroll)
+
         } catch (error) {
           throw Error(`[SmoothScrollProvider]: ${error}`)
         }
