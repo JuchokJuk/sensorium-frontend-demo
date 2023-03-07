@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/helpers/swipeDetector/lethargy.js", "src/helpers/debounce.js", "src/helpers/swipeDetector/swipeDetector.js", "src/helpers/swipeDetector/swipeDetectorMobile.js"],
   "exclude": ["node_modules"]
 }

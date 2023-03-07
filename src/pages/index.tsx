@@ -19,7 +19,7 @@ export default function Home() {
 
   const [stopped, setStopped] = useState(true);
   const [currentBlockIndex, setCurrentBlockIndex] = useState(0);
-  
+
   const [progress, _setProgress] = useState(0);
   const progressRef = useRef(progress);
   const setProgress = (progress: number) => {
@@ -56,7 +56,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if(!scrollContext.scroll) return;
+    if (!scrollContext.scroll) return;
 
     const swipeDetector = new SwipeDetector(
       scrollToNext,

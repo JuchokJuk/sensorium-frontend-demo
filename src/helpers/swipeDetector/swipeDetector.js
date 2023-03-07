@@ -1,10 +1,9 @@
-// @ts-nocheck
 class SwipeDetector {
     // config
-    maxLength = 8; // сколько прошлых значений берем чтоб считать среднее
+    maxLength = 16; // сколько прошлых значений берем чтоб считать среднее
     threshold = 20; // какое превышение регестрируем как пик
-    pool = 40; // сколько маленьких перемещений в сумму дадут свайп
-    slideTime = 1300; // раз в сколько мс можно свайпнуть
+    pool = 40; // сколько маленьких перемещений в сумме дадут свайп
+    slideTime = 400; // раз в сколько мс можно свайпнуть
     stunTime = 2000; // сколько мс пул не отвечает после пика
     poolReducer = 0.975; // скорость опусташения пула
 
@@ -114,7 +113,9 @@ class SwipeDetector {
             }, this.stunTime);
         }
         // pool
+        const isSlowing = this.deltaAvgArr[this.deltaAvgArr.length -1] < this.deltaAvgArr[0];
         if (
+            !isSlowing &&
             this.canPool &&
             this.canSlide &&
             (this.currentVolume > this.pool || this.currentVolume < -this.pool)
