@@ -2,10 +2,10 @@ import Image from 'next/image'
 import styles from './styles.module.css'
 
 interface PlaceholderType {
-    blockIndex: number;
+    text: string;
 }
 
-export const Placeholder: React.FC<PlaceholderType> = ({ blockIndex }) => {
+export const Placeholder: React.FC<PlaceholderType> = ({ text }) => {
     return (
         <div className={styles.center} data-scroll >
             <div className={styles.top}>
@@ -27,7 +27,7 @@ export const Placeholder: React.FC<PlaceholderType> = ({ blockIndex }) => {
                     />
                 </div>
             </div>
-            <span className={styles.blockIndex}>Block #{blockIndex}</span>
+            <span className={styles.text}>{text}</span>
         </div>
     );
 }

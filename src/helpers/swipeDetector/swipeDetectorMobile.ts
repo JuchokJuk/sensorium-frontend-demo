@@ -50,7 +50,7 @@ class SwipeDetectorMobile {
             this.yDown = null;
         }
     }
-    destroy() {
+    destroy(){
         window.removeEventListener("touchstart", this.touchStartHandler, false);
         window.removeEventListener("touchmove", this.touchMoveHandler, false);
     }
