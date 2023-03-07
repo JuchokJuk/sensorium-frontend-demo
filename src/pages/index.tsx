@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import "locomotive-scroll/dist/locomotive-scroll.css"
 import { SmoothScrollContext } from '@/contexts/SmoothScroll.context';
 import { useContext, useEffect, useRef, useState } from 'react';

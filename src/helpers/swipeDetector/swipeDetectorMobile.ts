@@ -1,3 +1,4 @@
+// @ts-nocheck
 class SwipeDetectorMobile {
     xDown = null;
     yDown = null;

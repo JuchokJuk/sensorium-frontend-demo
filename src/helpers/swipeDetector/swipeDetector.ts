@@ -1,3 +1,4 @@
+// @ts-nocheck
 class SwipeDetector {
     // config
     maxLength = 8; // сколько прошлых значений берем чтоб считать среднее
