@@ -10,15 +10,18 @@ class SwipeDetectorMobile {
     touchStartHandler;
     touchMoveHandler;
 
-    constructor(downCallback, upCallback) {
-        this.downCallback = downCallback;
-        this.upCallback = upCallback;
+    element;
+
+    constructor(config) {
+        this.element = config.element;
+        this.downCallback = config.downCallback;
+        this.upCallback = config.upCallback;
 
         this.touchStartHandler = this.touchStart.bind(this);
         this.touchMoveHandler = this.touchMove.bind(this)
 
-        window.addEventListener("touchstart", this.touchStartHandler, false);
-        window.addEventListener("touchmove", this.touchMoveHandler, false);
+        this.element.addEventListener("touchstart", this.touchStartHandler, false);
+        this.element.addEventListener("touchmove", this.touchMoveHandler, false);
     }
     touchStart(event) {
         this.xDown = event.touches[0].clientX;
@@ -40,10 +43,10 @@ class SwipeDetectorMobile {
             if (Math.abs(xDiff) < Math.abs(yDiff)) {
                 if (yDiff > 0) {
                     // up (touch)
-                    this.downCallback();
+                    this.upCallback();
                 } else {
                     // down (touch)
-                    this.upCallback();
+                    this.downCallback();
                 }
             }
             this.xDown = null;
@@ -51,8 +54,8 @@ class SwipeDetectorMobile {
         }
     }
     destroy(){
-        window.removeEventListener("touchstart", this.touchStartHandler, false);
-        window.removeEventListener("touchmove", this.touchMoveHandler, false);
+        this.element.removeEventListener("touchstart", this.touchStartHandler, false);
+        this.element.removeEventListener("touchmove", this.touchMoveHandler, false);
     }
 }
 

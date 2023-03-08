@@ -1,162 +1,102 @@
+import average from "../average";
+
 class SwipeDetector {
-    // config
-    maxLength = 16; // сколько прошлых значений берем чтоб считать среднее
-    threshold = 20; // какое превышение регестрируем как пик
-    pool = 40; // сколько маленьких перемещений в сумме дадут свайп
-    slideTime = 400; // раз в сколько мс можно свайпнуть
-    stunTime = 2000; // сколько мс пул не отвечает после пика
-    poolReducer = 0.975; // скорость опусташения пула
+    deltaYHistoryLegth = 16;
+    deltaYA1HistoryLegth = 16;
+    deltaYA2HistoryLegth = 16;
+    deltaYA3HistoryLegth = 16;
 
-    deltaArr = new Array(this.maxLength).fill(0);
-    deltaAvgArr = new Array(this.maxLength).fill(0);
+    previousPositiveDifference = 0;
 
-    curAvg;
-    curAvgAvg;
-
-    sloving = false;
-
-    canSlide = true;
-
-    currentVolume = 0;
-
-    canPool = true;
-
-    downCallback;
+    element;
     upCallback;
+    downCallback;
+    draw;
 
-    wheelHandler;
+    deltaYHistory = new Array(this.deltaYHistoryLegth).fill(0);
+    deltaYA1History = new Array(this.deltaYA1HistoryLegth).fill(0);
+    deltaYA2History = new Array(this.deltaYA2HistoryLegth).fill(0);
+    deltaYA3History = new Array(this.deltaYA3HistoryLegth).fill(0);
+    deltaYA1 = 0;
+    deltaYA2 = 0;
+    deltaYA3 = 0;
 
-    canPoolTimerId;
-    canSlideTimerId;
+    requestAnimationFrameId;
 
-    constructor(downCallback, upCallback) {
-        this.downCallback = downCallback;
-        this.upCallback = upCallback;
+    constructor(config) {
+        this.element = config.element;
+        this.upCallback = config.upCallback;
+        this.downCallback = config.downCallback;
+        this.draw = config?.draw;
 
-        this.wheelHandler = this.getSpeedByDeltaY.bind(this)
+        this.wheelListener = this.wheelListener.bind(this);
 
-        window.addEventListener("wheel", this.wheelHandler, false);
+        this.element.addEventListener('wheel', this.wheelListener, { passive: false });
+
+        this.storeZeros();
     }
 
-    getSpeedByDeltaY(event) {
-        if (!event.ctrlKey) {
-            this.getSpeed(event.deltaY);
+    storeZeros() {
+        this.storeDelataY(0)
+        this.requestAnimationFrameId = requestAnimationFrame(this.storeZeros.bind(this));
+    }
+
+    storeDelataY(deltaY) {
+        this.deltaYHistory.push(deltaY);
+        this.deltaYHistory.splice(0, 1);
+
+        this.deltaYA1 = average(this.deltaYHistory);
+        this.deltaYA1History.push(this.deltaYA1);
+        this.deltaYA1History.splice(0, 1);
+
+        this.deltaYA2 = average(this.deltaYA1History);
+        this.deltaYA2History.push(this.deltaYA2);
+        this.deltaYA2History.splice(0, 1);
+
+        this.deltaYA3 = average(this.deltaYA2History);
+        this.deltaYA3History.push(this.deltaYA3);
+        this.deltaYA3History.splice(0, 1);
+
+        const positiveDifference = this.calcPositiveDifference();
+
+        if (this.draw) {
+            this.draw([
+                deltaY,
+                this.deltaYA1,
+                this.deltaYA2,
+                this.deltaYA3,
+                positiveDifference
+            ]);
+        }
+
+        if (this.previousPositiveDifference === 0 && positiveDifference > 0) {
+            this.upCallback();
+        }
+        if (this.previousPositiveDifference === 0 && positiveDifference < 0) {
+            this.downCallback();
+        }
+
+        this.previousPositiveDifference = positiveDifference;
+    }
+
+    calcPositiveDifference() {
+        const diff = (this.deltaYA2 - this.deltaYA3);
+        if (this.deltaYA2 > 0) {
+            return diff > 0 ? diff : 0;
+        } else if (this.deltaYA2 < 0) {
+            return diff < 0 ? diff : 0;
+        } else {
+            return 0
         }
     }
 
-    slowDown() {
-        this.sloving = true;
-        const animate = () => {
-            this.getSpeed(0);
-            this.currentVolume *= this.poolReducer;
-
-            if (
-                Math.abs(this.curAvg) === 0 &&
-                Math.abs(this.curAvgAvg) === 0 &&
-                Math.abs(this.currentVolume) < 0.1
-            ) {
-                this.sloving = false;
-            } else {
-                requestAnimationFrame(animate);
-            }
-        };
-        requestAnimationFrame(animate);
+    wheelListener(event) {
+        this.storeDelataY(event.deltaY);
     }
 
-    average(arr) {
-        let sum = 0;
-        for (let item of arr) {
-            sum += item;
-        }
-        return sum / arr.length;
-    }
-
-    getSpeed(deltaY) {
-        this.deltaArr.shift();
-        this.deltaAvgArr.shift();
-
-        this.deltaArr.push(deltaY);
-        this.curAvg = this.average(this.deltaArr);
-        this.deltaAvgArr.push(this.curAvg);
-        this.curAvgAvg = this.average(this.deltaAvgArr);
-
-        this.currentVolume += this.curAvgAvg;
-
-        // spike
-        if (
-            this.canSlide &&
-            (this.curAvg > this.curAvgAvg + this.threshold ||
-                this.curAvg < this.curAvgAvg - this.threshold)
-        ) {
-            this.canSlide = false;
-            this.canPool = false;
-            if (
-                this.curAvg > this.curAvgAvg + this.threshold &&
-                this.curAvg > 0
-            ) {
-                // down (spike detector)
-                this.downCallback();
-            } else if (
-                this.curAvg < this.curAvgAvg - this.threshold &&
-                this.curAvg < 0
-            ) {
-                // up (spike detector)
-                this.upCallback();
-            }
-            clearTimeout(this.canSlideTimerId);
-            clearTimeout(this.canPoolTimerId);
-            this.canSlideTimerId = setTimeout(() => {
-                this.canSlide = true;
-            }, this.slideTime);
-            this.canPoolTimerId = setTimeout(() => {
-                this.canPool = true;
-            }, this.stunTime);
-        }
-        // pool
-        const isSlowing = this.deltaAvgArr[this.deltaAvgArr.length -1] < this.deltaAvgArr[0];
-        if (
-            !isSlowing &&
-            this.canPool &&
-            this.canSlide &&
-            (this.currentVolume > this.pool || this.currentVolume < -this.pool)
-        ) {
-            //
-            this.canSlide = false;
-            if (this.currentVolume > this.pool) {
-                // down (pool detector)
-                this.downCallback();
-                this.currentVolume = 0;
-            } else if (this.currentVolume < -this.pool) {
-                // up (pool detector)
-                this.upCallback();
-                this.currentVolume = 0;
-            }
-            //
-            clearTimeout(this.canSlideTimerId);
-            this.canSlideTimerId = setTimeout(() => {
-                this.canSlide = true;
-            }, this.slideTime);
-        }
-        if (this.currentVolume > this.pool) {
-            this.currentVolume = 0;
-        } else if (this.currentVolume < -this.pool) {
-            this.currentVolume = 0;
-        }
-
-        if (
-            Math.abs(this.curAvgAvg) !== 0 &&
-            Math.abs(this.curAvg) &&
-            Math.abs(this.currentVolume) > 0.1 &&
-            !this.sloving
-        ) {
-            requestAnimationFrame(this.slowDown.bind(this));
-        }
-    }
     destroy() {
-        window.removeEventListener("wheel", this.wheelHandler, false);
-        clearTimeout(this.canSlideTimerId);
-        clearTimeout(this.canPoolTimerId);
-        // todo: тут бы петлю замедления разорвать
+        this.element.removeEventListener('wheel', this.wheelListener);
+        cancelAnimationFrame(this.requestAnimationFrameId)
     }
 }
 

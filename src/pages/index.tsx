@@ -12,6 +12,7 @@ import NFTWithRealUtility from '@/components/feature/pages/home/NFTWithRealUtili
 import Form from '@/components/feature/pages/home/Form';
 import Footer from '@/components/feature/pages/home/Footer';
 import SwipeDetector from "@/helpers/swipeDetector/swipeDetector";
+import SwipeDetectorMobile from "@/helpers/swipeDetector/swipeDetectorMobile";
 
 export default function Home() {
 
@@ -45,12 +46,12 @@ export default function Home() {
   }
 
   function scrollToNext() {
-    console.log("next")
+    console.log("up")
     scrollContext.scroll?.scrollTo(progressRef.current + window.innerHeight);
     setCurrentBlockIndex(currentBlockIndex + 1);
   }
   function scrollToPrev() {
-    console.log("prev")
+    console.log("down")
     scrollContext.scroll?.scrollTo(progressRef.current - window.innerHeight);
     setCurrentBlockIndex(currentBlockIndex - 1);
   }
@@ -58,12 +59,20 @@ export default function Home() {
   useEffect(() => {
     if (!scrollContext.scroll) return;
 
-    const swipeDetector = new SwipeDetector(
-      scrollToNext,
-      scrollToPrev
-    );
+    const swipeDetector = new SwipeDetector({
+      element: window,
+      upCallback: scrollToNext,
+      downCallback: scrollToPrev,
+    })
+
+    const swipeDetectorMobile = new SwipeDetectorMobile({
+      element: window,
+      upCallback: scrollToNext,
+      downCallback: scrollToPrev,
+    })
 
     return () => {
+      swipeDetectorMobile.destroy();
       swipeDetector.destroy();
     };
   }, [scrollContext.scroll]);
