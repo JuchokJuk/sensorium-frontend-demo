@@ -12,7 +12,7 @@ class SwipeDetectorMobile {
 
     element;
 
-    canSwipe;
+    canSwipe = true;
 
     constructor(config) {
         this.element = config.element;

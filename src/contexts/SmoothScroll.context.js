@@ -4,7 +4,7 @@ export const SmoothScrollContext = createContext({
   scroll: null,
 })
 
-export const SmoothScrollProvider = ({ children, options }) => {
+export const SmoothScrollProvider = ({ children }) => {
   const [scroll, setScroll] = useState(null);
 
   useEffect(() => {
@@ -15,7 +15,8 @@ export const SmoothScrollProvider = ({ children, options }) => {
 
           const scroll = new LocomotiveScroll({
             el: document.querySelector('[data-scroll-container]') ?? undefined,
-            ...options,
+            smooth: true,
+            smoothMobile: true
           })
           scroll.stop();
           document.querySelector('.c-scrollbar')?.classList.add("c-scrollbar_hidden");
