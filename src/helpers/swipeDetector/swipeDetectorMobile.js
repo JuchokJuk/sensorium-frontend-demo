@@ -12,6 +12,8 @@ class SwipeDetectorMobile {
 
     element;
 
+    canSwipe;
+
     constructor(config) {
         this.element = config.element;
         this.downCallback = config.downCallback;
@@ -28,6 +30,8 @@ class SwipeDetectorMobile {
         this.yDown = event.touches[0].clientY;
     }
     touchMove(event) {
+        if (!this.canSwipe) return;
+
         let xUp = event.touches[0].clientX;
         let yUp = event.touches[0].clientY;
 
@@ -53,7 +57,7 @@ class SwipeDetectorMobile {
             this.yDown = null;
         }
     }
-    destroy(){
+    destroy() {
         this.element.removeEventListener("touchstart", this.touchStartHandler, false);
         this.element.removeEventListener("touchmove", this.touchMoveHandler, false);
     }

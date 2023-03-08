@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/helpers/swipeDetector/lethargy.js", "src/helpers/average.js", "src/helpers/swipeDetector/swipeDetector.js", "src/helpers/swipeDetector/swipeDetectorMobile.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/helpers/swipeDetector/lethargy.js", "src/helpers/average.js", "src/helpers/swipeDetector/SwipeDetectorDesctop.js", "src/helpers/swipeDetector/SwipeDetectorMobile.js"],
   "exclude": ["node_modules"]
 }
