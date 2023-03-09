@@ -1,0 +1,8 @@
+.slider {
+    transition: transform 0.4s ease-in-out;
+}
+
+.scrollable {
+    height: 100vh;
+    overflow-y: scroll;
+}

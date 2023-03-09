@@ -18,8 +18,8 @@ export const SmoothScrollProvider = ({ children }) => {
             smooth: true,
             smoothMobile: true
           })
-          scroll.stop();
-          document.querySelector('.c-scrollbar')?.classList.add("c-scrollbar_hidden");
+          // scroll.stop();
+          // document.querySelector('.c-scrollbar')?.classList.add("c-scrollbar_hidden");
 
           setScroll(scroll)
 

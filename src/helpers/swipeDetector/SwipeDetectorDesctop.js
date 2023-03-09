@@ -44,8 +44,6 @@ class SwipeDetectorDesctop {
     }
 
     storeDelataY(deltaY) {
-        if(!this.canSwipe) return;
-
         this.deltaYHistory.push(deltaY);
         this.deltaYHistory.splice(0, 1);
 
@@ -73,11 +71,15 @@ class SwipeDetectorDesctop {
             ]);
         }
 
-        if (this.previousPositiveDifference === 0 && positiveDifference > 0) {
-            this.upCallback();
-        }
-        if (this.previousPositiveDifference === 0 && positiveDifference < 0) {
-            this.downCallback();
+        if (this.canSwipe) {
+            if (this.previousPositiveDifference === 0 && positiveDifference > 0) {
+                console.log("up")
+                this.upCallback();
+            }
+            if (this.previousPositiveDifference === 0 && positiveDifference < 0) {
+                console.log("down")
+                this.downCallback();
+            }
         }
 
         this.previousPositiveDifference = positiveDifference;

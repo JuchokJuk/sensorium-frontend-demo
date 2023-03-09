@@ -1,11 +1,12 @@
 // @ts-nocheck
 
 import "locomotive-scroll/dist/locomotive-scroll.css"
-import { SmoothScrollContext } from '@/contexts/SmoothScroll.context';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import CustomCursor from '@/components/feature/common/CustomCursor';
+import styles from "./styles.module.css"
 
-import Slider from '@/components/feature/pages/home/Slider';
+import Slider from "@/helpers/Slider"
+import AvatarSlider from '@/components/feature/pages/home/AvatarSlider';
 import Cards from '@/components/feature/pages/home/Cards';
 import GalaxyOfStars from '@/components/feature/pages/home/GalaxyOfStars';
 import NFTWithRealUtility from '@/components/feature/pages/home/NFTWithRealUtility';
@@ -13,121 +14,67 @@ import Form from '@/components/feature/pages/home/Form';
 import Footer from '@/components/feature/pages/home/Footer';
 import SwipeDetector from "@/helpers/swipeDetector/SwipeDetector";
 import Constructor from "@/components/feature/pages/home/Constructor";
+import Chart from "@/helpers/swipeDetector/dev/Chart"
 
 export default function Home() {
 
+  const sliderContainerRef = useRef(null);
+  const sliderRef = useRef(null);
   const swipeDetectorRef = useRef(null);
 
-  const sliderRef = useRef(null);
-  const cardsRef = useRef(null);
-  const constructorRef = useRef(null);
-  const galaxyOfStarsRef = useRef(null);
-  const NFTWithRealUtilityRef = useRef(null);
-
-  const fullPageBlocks = [
-    sliderRef.current,
-    cardsRef.current,
-    galaxyOfStarsRef.current,
-    constructorRef.current,
-    NFTWithRealUtilityRef.current
-  ]
-
-  const scrollContext = useContext(SmoothScrollContext);
-
-  const [currentBlockIndex, _setCurrentBlockIndex] = useState(0);
-  const currentBlockIndexRef = useRef(currentBlockIndex);
-  const setCurrentBlockIndex = (currentBlockIndex: number) => {
-    currentBlockIndexRef.current = currentBlockIndex;
-    _setCurrentBlockIndex(currentBlockIndex);
-  }; // 😋 delicious
-
-  function enableScroll() {
-    scrollContext.scroll?.start()
-    document.querySelector('.c-scrollbar')?.classList.remove("c-scrollbar_hidden");
-    swipeDetectorRef.current.setCanSwipe(false);
-  }
-
-  function disableScroll() {
-    scrollContext.scroll?.stop()
-    document.querySelector('.c-scrollbar')?.classList.add("c-scrollbar_hidden");
-    swipeDetectorRef.current.setCanSwipe(true);
-  }
-
-  const [needEnable, _setNeedEnable] = useState(false);
-  const needEnableRef = useRef(needEnable);
-  const setNeedEnable= (needEnable: number) => {
-    needEnableRef.current = needEnable;
-    _setNeedEnable(needEnable);
-  }; // 😋 delicious
-
-  function scrollToNext() {
-    console.log("scrollToNext")
-    if (currentBlockIndexRef.current < fullPageBlocks.length - 1) {
-      scrollContext.scroll?.scrollTo(fullPageBlocks[currentBlockIndexRef.current + 1]);
-      setCurrentBlockIndex(currentBlockIndexRef.current + 1);
-    }
-    if (currentBlockIndexRef.current > fullPageBlocks.length - 2) {
-      setNeedEnable(true)
-    }
-  }
-
-  function scrollToPrev() {
-    console.log("scrollToPrev")
-    if (currentBlockIndexRef.current > 0) {
-      scrollContext.scroll?.scrollTo(fullPageBlocks[currentBlockIndexRef.current - 1]);
-      setCurrentBlockIndex(currentBlockIndexRef.current - 1);
-    }
-  }
-
   useEffect(() => {
-    if (!scrollContext.scroll) return;
-    scrollContext.scroll.on('scroll', ({ limit, scroll }) => {
-      if(scrollContext.scroll.scroll.animatingScroll === false && needEnableRef.current){
-        console.log('enabled')
-        enableScroll();
-        setNeedEnable(false)
-      }
+    if (!sliderContainerRef.current) return;
+
+    sliderRef.current = new Slider({
+      slidesContainer: sliderContainerRef.current
     })
-  }, [scrollContext])
 
-  useEffect(() => {
-    if (!scrollContext.scroll) return;
+    const canvas = document.getElementById("canvas");
+    const chart = new Chart({
+      canvas: canvas,
+      colors: ["#FF000019", "#00FF0080", "#0000FF", "#FFFF00", "#FF00FF"]
+    });
 
     swipeDetectorRef.current = new SwipeDetector({
+      draw: chart.draw.bind(chart),
       element: window,
-      upCallback: scrollToNext,
-      downCallback: scrollToPrev,
+      upCallback: sliderRef.current.slideNext.bind(sliderRef.current),
+      downCallback: sliderRef.current.slidePrev.bind(sliderRef.current),
     })
 
     return () => {
       swipeDetectorRef.current.destroy();
     };
-  }, [scrollContext]);
+  }, [sliderContainerRef]);
+
+  function scrollHandler(e) {
+    if (e.target.scrollTop > 0) {
+      swipeDetectorRef.current.setCanSwipe(false)
+    } else {
+      swipeDetectorRef.current.setCanSwipe(true);
+    }
+  }
 
   return (
     <>
-      <div data-scroll-container>
-        <div data-scroll-section ref={sliderRef}>
-          <Slider text="#1 Slider" />
-        </div>
-        <div data-scroll-section ref={cardsRef}>
-          <Cards text="#2 Cards" />
-        </div>
-        <div data-scroll-section ref={galaxyOfStarsRef}>
-          <GalaxyOfStars text="#3 GalaxyOfStars" />
-        </div>
-        <div data-scroll-section ref={constructorRef}>
-          <Constructor text="#4 Constructor" />
-        </div>
-        <div data-scroll-section ref={NFTWithRealUtilityRef}>
+
+      <canvas id="canvas" style={{position:'fixed', top:0, left:0}}></canvas>
+      <div ref={sliderContainerRef} className={styles.slider}>
+
+        <AvatarSlider text="#1 Slider" />
+
+        <Cards text="#2 Cards" />
+
+        <GalaxyOfStars text="#3 GalaxyOfStars" />
+
+        <Constructor text="#4 Constructor" />
+
+        <div className={styles.scrollable} onScroll={scrollHandler}>
           <NFTWithRealUtility text="#5 NFTWithRealUtility" />
-        </div>
-        <div data-scroll-section>
           <Form text="#6 Form" />
-        </div>
-        <div data-scroll-section>
           <Footer text="#7 Footer" />
         </div>
+
       </div>
 
       <CustomCursor />
