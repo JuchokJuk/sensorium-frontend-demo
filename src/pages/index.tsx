@@ -1,6 +1,5 @@
 // @ts-nocheck
 
-import "locomotive-scroll/dist/locomotive-scroll.css"
 import { useEffect, useRef } from 'react';
 import CustomCursor from '@/components/feature/common/CustomCursor';
 import styles from "./styles.module.css"
