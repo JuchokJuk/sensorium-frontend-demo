@@ -1,0 +1,94 @@
+@import "@/styles/variables.scss";
+
+.header {
+    background: rgb(random(255), random(255), random(255));
+}
+
+.text {
+    background: rgb(random(255), random(255), random(255));
+}
+
+.button {
+    background: rgb(random(255), random(255), random(255));
+}
+
+@media (min-width: $min-screen-xl) {
+    .header {
+        width: 355px;
+        height: 78px;
+        margin-bottom: 40px;
+
+        transform: translateX(-355px - 32px);
+    }
+
+    .text {
+        width: 314px;
+        height: 100px;
+        margin-bottom: 50px;
+        transform: translateX(-314px - 32px);
+    }
+
+    .button {
+        width: 204px;
+        height: 62px;
+        transform: translateX(-204px - 32px);
+    }
+}
+
+@media (min-width: $min-screen-lg) and (max-width: $max-screen-lg) {
+    .header {
+        width: 320px;
+        height: 68px;
+        margin-bottom: 40px;
+        transform: translateX(-320px - 32px);
+    }
+
+    .text {
+        width: 283px;
+        height: 100px;
+        margin-bottom: 50px;
+        transform: translateX(-283px - 32px);
+    }
+
+    .button {
+        width: 204px;
+        height: 61px;
+        transform: translateX(-204px - 32px);
+    }
+}
+
+@media (min-width: $min-screen-md) and (max-width: $max-screen-md) {
+    .header {
+        width: 320px;
+        height: 58px;
+        margin-bottom: 30px;
+        transform: translateX(-320px - 32px);
+    }
+
+    .text {
+        width: 283px;
+        height: 100px;
+        margin-bottom: 40px;
+        transform: translateX(-283px - 32px);
+    }
+
+    .button {
+        width: 187px;
+        height: 52px;
+        transform: translateX(-187px - 32px);
+    }
+}
+
+@media (min-width: $min-screen-sm) and (max-width: $max-screen-sm) {}
+
+@media (max-width: $max-screen-xs) {}
+
+.header,
+.text,
+.button {
+    transition: transform 0.4s ease-in-out;
+}
+
+.shown {
+    transform: translateX(0);
+}

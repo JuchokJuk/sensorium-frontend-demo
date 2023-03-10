@@ -1,35 +1,35 @@
+import { swipeDetectorConfigType } from "./SwipeDetector";
 import average from "../average";
 
 class SwipeDetectorDesctop {
-    deltaYHistoryLegth = 16;
-    deltaYA1HistoryLegth = 16;
-    deltaYA2HistoryLegth = 16;
-    deltaYA3HistoryLegth = 16;
+    element: HTMLElement;
+    upCallback: () => void;
+    downCallback: () => void;
 
-    previousPositiveDifference = 0;
+    deltaYHistoryLegth: number = 16;
+    deltaYA1HistoryLegth: number = 16;
+    deltaYA2HistoryLegth: number = 16;
+    deltaYA3HistoryLegth: number = 16;
 
-    element;
-    upCallback;
-    downCallback;
-    draw;
+    deltaYHistory: number[] = new Array(this.deltaYHistoryLegth).fill(0);
+    deltaYA1History: number[] = new Array(this.deltaYA1HistoryLegth).fill(0);
+    deltaYA2History: number[] = new Array(this.deltaYA2HistoryLegth).fill(0);
+    deltaYA3History: number[] = new Array(this.deltaYA3HistoryLegth).fill(0);
 
-    deltaYHistory = new Array(this.deltaYHistoryLegth).fill(0);
-    deltaYA1History = new Array(this.deltaYA1HistoryLegth).fill(0);
-    deltaYA2History = new Array(this.deltaYA2HistoryLegth).fill(0);
-    deltaYA3History = new Array(this.deltaYA3HistoryLegth).fill(0);
-    deltaYA1 = 0;
-    deltaYA2 = 0;
-    deltaYA3 = 0;
+    deltaYA1: number = 0;
+    deltaYA2: number = 0;
+    deltaYA3: number = 0;
 
-    requestAnimationFrameId;
+    previousPositiveDifference: number = 0;
+
+    requestAnimationFrameId?: number;
 
     canSwipe = true;
 
-    constructor(config) {
+    constructor(config: swipeDetectorConfigType) {
         this.element = config.element;
         this.upCallback = config.upCallback;
         this.downCallback = config.downCallback;
-        this.draw = config?.draw;
 
         this.wheelListener = this.wheelListener.bind(this);
 
@@ -43,7 +43,7 @@ class SwipeDetectorDesctop {
         this.requestAnimationFrameId = requestAnimationFrame(this.storeZeros.bind(this));
     }
 
-    storeDelataY(deltaY) {
+    storeDelataY(deltaY: number) {
         this.deltaYHistory.push(deltaY);
         this.deltaYHistory.splice(0, 1);
 
@@ -61,23 +61,11 @@ class SwipeDetectorDesctop {
 
         const positiveDifference = this.calcPositiveDifference();
 
-        if (this.draw) {
-            this.draw([
-                deltaY,
-                this.deltaYA1,
-                this.deltaYA2,
-                this.deltaYA3,
-                positiveDifference
-            ]);
-        }
-
         if (this.canSwipe) {
             if (this.previousPositiveDifference === 0 && positiveDifference > 0) {
-                console.log("up")
                 this.upCallback();
             }
             if (this.previousPositiveDifference === 0 && positiveDifference < 0) {
-                console.log("down")
                 this.downCallback();
             }
         }
@@ -96,12 +84,14 @@ class SwipeDetectorDesctop {
         }
     }
 
-    wheelListener(event) {
+    wheelListener(event: WheelEvent) {
+        if(event.ctrlKey) return;
         this.storeDelataY(event.deltaY);
     }
 
     destroy() {
         this.element.removeEventListener('wheel', this.wheelListener);
+        if (this.requestAnimationFrameId === undefined) return;
         cancelAnimationFrame(this.requestAnimationFrameId)
     }
 }

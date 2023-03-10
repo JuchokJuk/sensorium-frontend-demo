@@ -1,8 +1,18 @@
-.slider {
-    transition: transform 0.4s ease-in-out;
+.scrollable {
+    height: 100%;
+    overflow-y: hidden;
 }
 
-.scrollable {
-    height: 100vh;
-    overflow-y: scroll;
+.scrollable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+
+.slider {
+    height: 100%;
+    overscroll-behavior: none;
 }

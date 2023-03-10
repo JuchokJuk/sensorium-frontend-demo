@@ -1,10 +1,36 @@
-import Placeholder from "@/components/shared/Placeholder";
+import styles from "./styles.module.scss";
+import { CSSTransition } from 'react-transition-group';
+import clsx from "clsx";
+import ControlsLeft from "./ControlsLeft";
+import ControlsRight from "./ControlsRight";
 
 interface ConstructorProps {
-    text: string;
+    currentSlideIndex: number;
 }
-export const Constructor: React.FC<ConstructorProps> = ({ text }) => {
+
+export const Constructor: React.FC<ConstructorProps> = ({ currentSlideIndex }) => {
     return (
-        <Placeholder text={text}></Placeholder>
+        <>
+            <div className={styles['constructor']}>
+
+
+                <div className={styles['avatar']}>
+                </div>
+
+                <div className={styles['controls-left']}>
+                    <ControlsLeft currentSlideIndex={currentSlideIndex} />
+                </div>
+
+
+                <div className={styles['controls-right']}>
+                    <ControlsRight currentSlideIndex={currentSlideIndex} />
+                </div>
+
+                <div className={styles['color-picker']}>
+                    color-picker
+                </div>
+
+            </div>
+        </>
     );
 }

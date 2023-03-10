@@ -1,0 +1,95 @@
+@import "@/styles/variables.scss";
+
+.galaxy-of-stars {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .header {
+        color: yellow;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .line {
+            display: flex;
+            flex-direction: row;
+
+            span {
+                transition: transform 2s ease-in-out;
+                display: block;
+            }
+        }
+
+        .transition-delay {
+            span {
+                transition-delay: 0.2s;
+            }
+        }
+    }
+
+    .text{
+        color: white;
+        text-align: center;
+    }
+}
+
+
+@media (min-width: $min-screen-xl) {
+    .header{
+        font-size: 200px;
+        margin-bottom: 60px;
+    }
+    .text{
+        font-size: 18px;
+        width: 543px;
+    }
+}
+
+@media (min-width: $min-screen-lg) and (max-width: $max-screen-lg) {
+    .header{
+        font-size: 160px;
+        margin-bottom: 40px;
+    }
+    .text{
+        font-size: 16px;
+        width: 543px;
+    }
+}
+
+@media (min-width: $min-screen-md) and (max-width: $max-screen-md) {
+    .header{
+        font-size: 92px;
+        margin-bottom: 30px;
+    }
+    .text{
+        font-size: 16px;
+        width: 495px;
+    }
+}
+
+@media (min-width: $min-screen-sm) and (max-width: $max-screen-sm) {
+    .header{
+        font-size: 92px;
+        margin-bottom: 30px;
+    }
+    .text{
+        font-size: 16px;
+        width: 495px;
+    }
+}
+
+@media (max-width: $max-screen-xs) {
+    .header{
+        font-size: 35px;
+        margin-bottom: 30px;
+    }
+    .text{
+        font-size: 13px;
+        width: 335px;
+    }
+}

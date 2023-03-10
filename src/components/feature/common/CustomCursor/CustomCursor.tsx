@@ -59,6 +59,7 @@ export const CustomCursor = () => {
         return () => {
             cleanUp();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [hasPointer]);
 
     function mouseMoveHandler(e: MouseEvent) {

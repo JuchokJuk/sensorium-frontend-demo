@@ -1,10 +1,8 @@
-import Placeholder from "@/components/shared/Placeholder";
+import styles from "./styles.module.scss";
 
-interface CardsProps {
-    text: string;
-}
-export const Cards: React.FC<CardsProps> = ({ text }) => {
+export const Cards: React.FC = () => {
     return (
-        <Placeholder text={text}></Placeholder>
+        <div className={styles.cards}>
+        </div>
     );
 }

@@ -1,6 +1,4 @@
-// @ts-nocheck
-
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CustomCursor from '@/components/feature/common/CustomCursor';
 import styles from "./styles.module.css"
 
@@ -13,60 +11,93 @@ import Form from '@/components/feature/pages/home/Form';
 import Footer from '@/components/feature/pages/home/Footer';
 import SwipeDetector from "@/helpers/swipeDetector/SwipeDetector";
 import Constructor from "@/components/feature/pages/home/Constructor";
-import Chart from "@/helpers/swipeDetector/dev/Chart"
+import Head from 'next/head';
+import Header from '@/components/feature/common/Header';
 
 export default function Home() {
 
-  const sliderContainerRef = useRef(null);
-  const sliderRef = useRef(null);
-  const swipeDetectorRef = useRef(null);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
+
+  const sliderContainerRef = useRef<HTMLDivElement | null>(null);
+  const sliderRef = useRef<Slider | null>(null);
+  const swipeDetectorRef = useRef<SwipeDetector | null>(null);
 
   useEffect(() => {
     if (!sliderContainerRef.current) return;
 
     sliderRef.current = new Slider({
-      slidesContainer: sliderContainerRef.current
+      slidesContainer: sliderContainerRef.current,
+      onTransitionEnd: transitionEndHandler,
+      onSlideChange: slideChangeHandler,
     })
 
-    const canvas = document.getElementById("canvas");
-    const chart = new Chart({
-      canvas: canvas,
-      colors: ["#FF000019", "#00FF0080", "#0000FF", "#FFFF00", "#FF00FF"]
-    });
-
     swipeDetectorRef.current = new SwipeDetector({
-      draw: chart.draw.bind(chart),
+      // @ts-ignore
       element: window,
       upCallback: sliderRef.current.slideNext.bind(sliderRef.current),
       downCallback: sliderRef.current.slidePrev.bind(sliderRef.current),
     })
 
     return () => {
-      swipeDetectorRef.current.destroy();
+      if (swipeDetectorRef.current) {
+        swipeDetectorRef.current.destroy();
+      }
+      if (sliderRef.current) {
+        sliderRef.current.destroy();
+      }
     };
   }, [sliderContainerRef]);
 
-  function scrollHandler(e) {
-    if (e.target.scrollTop > 0) {
-      swipeDetectorRef.current.setCanSwipe(false)
-    } else {
+
+  function transitionEndHandler() {
+    if (!sliderRef.current || !sliderContainerRef.current) return;
+
+    if (sliderRef.current.currentSlideIndex === 4) {
+      if (navigator.userAgent.indexOf("Firefox") > 0) {
+        (sliderContainerRef.current.lastElementChild as HTMLElement).style.overflowY = 'scroll';
+      } else {
+        (sliderContainerRef.current.lastElementChild as HTMLElement).style.overflowY = 'overlay';
+      }
+    }
+  }
+
+  function slideChangeHandler(from: number, to: number) {
+    if (!swipeDetectorRef.current || !sliderContainerRef.current) return;
+
+    setCurrentSlideIndex(to);
+    if (from === 4 && to === 3) {
       swipeDetectorRef.current.setCanSwipe(true);
+      sliderContainerRef.current.lastElementChild?.scrollTo(0, 0);
+      (sliderContainerRef.current.lastElementChild as HTMLElement).style.overflowY = 'hidden';
+    }
+  }
+
+  function scrollHandler(event: any) {
+    if (!swipeDetectorRef.current) return;
+    if (event.target.scrollTop === 0) {
+      swipeDetectorRef.current.setCanSwipe(true);
+    } else {
+      swipeDetectorRef.current.setCanSwipe(false);
     }
   }
 
   return (
     <>
+      <Head>
+        <title>sensorium demo</title>
+      </Head>
+      
+      <Header />
 
-      <canvas id="canvas" style={{position:'fixed', top:0, left:0}}></canvas>
       <div ref={sliderContainerRef} className={styles.slider}>
 
-        <AvatarSlider text="#1 Slider" />
+        <AvatarSlider currentSlideIndex={currentSlideIndex} />
 
-        <Cards text="#2 Cards" />
+        <Cards/>
 
-        <GalaxyOfStars text="#3 GalaxyOfStars" />
+        <GalaxyOfStars currentSlideIndex={currentSlideIndex} />
 
-        <Constructor text="#4 Constructor" />
+        <Constructor currentSlideIndex={currentSlideIndex}/>
 
         <div className={styles.scrollable} onScroll={scrollHandler}>
           <NFTWithRealUtility text="#5 NFTWithRealUtility" />

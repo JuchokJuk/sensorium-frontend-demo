@@ -1,0 +1,68 @@
+@import "@/styles/variables.scss";
+
+.list-item:first-child {
+    background: rgb(random(255), random(255), random(255));
+}
+
+.list-item:nth-child(2) {
+    background: rgb(random(255), random(255), random(255));
+}
+
+.list-item:nth-child(3) {
+    background: rgb(random(255), random(255), random(255));
+}
+
+.list-item:nth-child(4) {
+    background: rgb(random(255), random(255), random(255));
+}
+
+.list-item:nth-child(5) {
+    background: rgb(random(255), random(255), random(255));
+}
+
+.list-item:nth-child(6) {
+    background: rgb(random(255), random(255), random(255));
+}
+
+.list-item:nth-child(7) {
+    background: rgb(random(255), random(255), random(255));
+}
+
+@media (min-width: $min-screen-xl) {
+    .list-item {
+        width: 416px;
+        height: 75px;
+
+        transform: translateX(416px);
+    }
+}
+
+@media (min-width: $min-screen-lg) and (max-width: $max-screen-lg) {
+    .list-item {
+        width: 352px;
+        height: 64px;
+
+        transform: translateX(352px);
+    }
+}
+
+@media (min-width: $min-screen-md) and (max-width: $max-screen-md) {
+    .list-item {
+        width: 217px;
+        height: 57px;
+
+        transform: translateX(217px);
+    }
+}
+
+@media (min-width: $min-screen-sm) and (max-width: $max-screen-sm) {}
+
+@media (max-width: $max-screen-xs) {}
+
+.list-item{
+    transition: transform 0.4s ease-in-out;
+}
+
+.shown {
+    transform: translateX(0);
+}

@@ -1,0 +1,63 @@
+@import "@/styles/variables.scss";
+
+.header-container {
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+
+    .header {
+        background: rgb(random(255), random(255), random(255));
+        width: 100%;
+    }
+}
+
+
+@media (min-width: $min-screen-xl) {
+    .header-container {
+        padding: 30px;
+
+        .header {
+            height: 81px;
+        }
+    }
+}
+
+@media (min-width: $min-screen-lg) and (max-width: $max-screen-lg) {
+    .header-container {
+        padding: 24px 40px;
+
+        .header {
+            height: 64px;
+        }
+    }
+}
+
+@media (min-width: $min-screen-md) and (max-width: $max-screen-md) {
+    .header-container {
+        padding: 24px 32px;
+
+        .header {
+            height: 56px;
+        }
+    }
+}
+
+@media (min-width: $min-screen-sm) and (max-width: $max-screen-sm) {
+    .header-container {
+        padding: 24px;
+
+        .header {
+            height: 56px;
+        }
+    }
+}
+
+@media (max-width: $max-screen-xs) {
+    .header-container {
+        padding: 24px 20px;
+
+        .header {
+            height: 52px;
+        }
+    }
+}

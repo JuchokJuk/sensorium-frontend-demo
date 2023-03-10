@@ -1,23 +1,24 @@
+import { swipeDetectorConfigType } from "./SwipeDetector";
+
 class SwipeDetectorMobile {
-    xDown = null;
-    yDown = null;
-    // config
-    touchscreenTreshold = 150; // порог свайпа на сенсорном экране
+    element: HTMLElement;
+    upCallback: () => void;
+    downCallback: () => void;
 
-    downCallback;
-    upCallback;
+    touchscreenTreshold: number = 150; // порог свайпа на сенсорном экране
 
-    touchStartHandler;
-    touchMoveHandler;
+    xDown?: number;
+    yDown?: number;
 
-    element;
+    touchStartHandler: (event: TouchEvent) => void;
+    touchMoveHandler: (event: TouchEvent) => void;
 
-    canSwipe = true;
+    canSwipe: boolean = true;
 
-    constructor(config) {
+    constructor(config: swipeDetectorConfigType) {
         this.element = config.element;
-        this.downCallback = config.downCallback;
         this.upCallback = config.upCallback;
+        this.downCallback = config.downCallback;
 
         this.touchStartHandler = this.touchStart.bind(this);
         this.touchMoveHandler = this.touchMove.bind(this)
@@ -25,23 +26,23 @@ class SwipeDetectorMobile {
         this.element.addEventListener("touchstart", this.touchStartHandler, false);
         this.element.addEventListener("touchmove", this.touchMoveHandler, false);
     }
-    touchStart(event) {
+
+    touchStart(event: TouchEvent) {
         this.xDown = event.touches[0].clientX;
         this.yDown = event.touches[0].clientY;
     }
-    touchMove(event) {
+
+    touchMove(event: TouchEvent) {
         if (!this.canSwipe) return;
 
         let xUp = event.touches[0].clientX;
         let yUp = event.touches[0].clientY;
 
+
+        if (!this.xDown || !this.yDown) return;
+
         let xDiff = this.xDown - xUp;
         let yDiff = this.yDown - yUp;
-
-        // ?
-        if (!this.xDown || !this.yDown) {
-            return;
-        }
 
         if (Math.abs(xDiff) + Math.abs(yDiff) > this.touchscreenTreshold) {
             if (Math.abs(xDiff) < Math.abs(yDiff)) {
@@ -53,10 +54,11 @@ class SwipeDetectorMobile {
                     this.downCallback();
                 }
             }
-            this.xDown = null;
-            this.yDown = null;
+            this.xDown = undefined;
+            this.yDown = undefined;
         }
     }
+
     destroy() {
         this.element.removeEventListener("touchstart", this.touchStartHandler, false);
         this.element.removeEventListener("touchmove", this.touchMoveHandler, false);

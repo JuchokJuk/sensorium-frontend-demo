@@ -1,0 +1,128 @@
+@import "@/styles/variables.scss";
+
+.avatar-slider {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.background-container {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 1s ease-in-out;
+
+    .background {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        transition: width 1s ease-in-out, height 1s ease-in-out, border-radius 1s ease-in-out;
+
+        .card {
+            height: 100%;
+            width: 100%;
+            background: rgb(random(255), random(255), random(255));
+        }
+    }
+}
+
+.ticker {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: yellow;
+    transform: translateY(0);
+    transition: transform 1s ease-in-out;
+}
+
+
+
+.avatar-slider_step-1 {
+
+    .background-container {
+        transform: translateY(100%);
+    }
+
+    .background {
+        width: 418px;
+        height: 722px;
+        border-radius: 209px;
+    }
+}
+
+
+.avatar-slider_step-2,
+.avatar-slider_step-3,
+.avatar-slider_step-4 {
+
+    .background-container {
+        transform: translateY(100%);
+    }
+
+    .background {
+        width: 222px;
+        height: 412.81px;
+        border-radius: 111px;
+    }
+}
+
+@media (min-width: $min-screen-xl) {
+    .ticker {
+        height: 44px;
+    }
+
+    .ticker-transition-exit-active,
+    .ticker-transition-exit-done {
+        transform: translateY(44px);
+    }
+}
+
+@media (min-width: $min-screen-lg) and (max-width: $max-screen-lg) {
+    .ticker {
+        height: 32px;
+    }
+
+    .ticker-transition-exit-active,
+    .ticker-transition-exit-done {
+        transform: translateY(32px);
+    }
+
+}
+
+@media (min-width: $min-screen-md) and (max-width: $max-screen-md) {
+    .ticker {
+        height: 33px;
+    }
+
+    .ticker-transition-exit-active,
+    .ticker-transition-exit-done {
+        transform: translateY(33px);
+    }
+}
+
+@media (min-width: $min-screen-sm) and (max-width: $max-screen-sm) {
+    .ticker {
+        height: 33px;
+    }
+
+    .ticker-transition-exit-active,
+    .ticker-transition-exit-done {
+        transform: translateY(33px);
+    }
+}
+
+@media (max-width: $max-screen-xs) {
+    .ticker {
+        height: 32px;
+    }
+
+    .ticker-transition-exit-active,
+    .ticker-transition-exit-done {
+        transform: translateY(32px);
+    }
+}

@@ -1,0 +1,203 @@
+@import "@/styles/variables.scss";
+
+.constructor {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+
+
+    .avatar {
+        background: rgb(random(255), random(255), random(255));
+    }
+
+
+    .controls-left {
+        position: absolute;
+
+        .header {
+            background: rgb(random(255), random(255), random(255));
+        }
+
+        .text {
+            background: rgb(random(255), random(255), random(255));
+        }
+
+        .button {
+            background: rgb(random(255), random(255), random(255));
+        }
+    }
+
+    .controls-right {
+        right: 0;
+        position: absolute;
+
+        .list-item:first-child {
+            background: rgb(random(255), random(255), random(255));
+        }
+
+        .list-item:nth-child(2) {
+            background: rgb(random(255), random(255), random(255));
+        }
+
+        .list-item:nth-child(3) {
+            background: rgb(random(255), random(255), random(255));
+        }
+
+        .list-item:nth-child(4) {
+            background: rgb(random(255), random(255), random(255));
+        }
+
+        .list-item:nth-child(5) {
+            background: rgb(random(255), random(255), random(255));
+        }
+
+        .list-item:nth-child(6) {
+            background: rgb(random(255), random(255), random(255));
+        }
+
+        .list-item:nth-child(7) {
+            background: rgb(random(255), random(255), random(255));
+        }
+    }
+
+
+    .color-picker {
+        position: absolute;
+        bottom: 0;
+        background: rgb(random(255), random(255), random(255));
+    }
+
+}
+
+
+@media (min-width: $min-screen-xl) {
+
+    .controls-left {
+        left: 32px;
+
+        .header {
+            width: 355px;
+            height: 78px;
+            margin-bottom: 40px;
+        }
+
+        .text {
+            width: 314px;
+            height: 100px;
+            margin-bottom: 50px;
+        }
+
+        .button {
+            width: 204px;
+            height: 62px;
+        }
+    }
+
+    .avatar {
+        width: 372px;
+        height: 687.74px;
+        border-radius: 186px;
+    }
+
+    .list-item {
+        width: 416px;
+        height: 75px
+    }
+
+    .color-picker {
+        width: 734px;
+        height: 62px;
+        margin-bottom: 63px;
+    }
+}
+
+@media (min-width: $min-screen-lg) and (max-width: $max-screen-lg) {
+
+    .controls-left {
+        left: 32px;
+
+        .header {
+            width: 320px;
+            height: 68px;
+            margin-bottom: 40px;
+        }
+
+        .text {
+            width: 283px;
+            height: 100px;
+            margin-bottom: 50px;
+        }
+
+        .button {
+            width: 204px;
+            height: 61px;
+        }
+    }
+
+    .avatar {
+        width: 324px;
+        height: 599px;
+        border-radius: 162px;
+    }
+
+    .list-item {
+        width: 352px;
+        height: 64px
+    }
+
+    .color-picker {
+        width: 734px;
+        height: 62px;
+        margin-bottom: 58px;
+    }
+}
+
+@media (min-width: $min-screen-md) and (max-width: $max-screen-md) {
+    .controls-left {
+        left: 32px;
+
+        .header {
+            width: 320px;
+            height: 58px;
+            margin-bottom: 30px;
+        }
+
+        .text {
+            width: 283px;
+            height: 100px;
+            margin-bottom: 40px;
+        }
+
+        .button {
+            width: 187px;
+            height: 52px;
+        }
+    }
+
+    .avatar {
+        width: 257.47px;
+        height: 476px;
+        border-radius: 128.735px;
+    }
+
+    .list-item {
+        width: 217px;
+        height: 57px
+    }
+
+    .color-picker {
+        width: 734px;
+        height: 62px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (min-width: $min-screen-sm) and (max-width: $max-screen-sm) {
+
+    // тут блок разделяется на 2
+}
+
+@media (max-width: $max-screen-xs) {}
